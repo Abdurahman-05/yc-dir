@@ -1,6 +1,6 @@
 'use client'
 import Form from 'next/form'
-import SearchFormReset from './SearchFormReset'
+import SearchFormReset from '@/components/SearchFormReset'
 import Link from 'next/link'
 
 const SearchForm = ({ query }: { query?: string }) => {
