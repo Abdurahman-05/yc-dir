@@ -1,49 +1,19 @@
 import { SearchParams } from "next/dist/server/request/search-params";
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 export default async function page({ searchParams }: { searchParams: Promise<{ query?: string }> }) {
   const query = (await searchParams).query;
-  const posts = [
-    {
-      _createdAt: Date.now(),
-      views:55,
-      author: {_id:1,name:"adrian"},
-      id: 1,
-      description: "This is a description",
-      image:
-        "https://images.unsplash.com/photo-1544717306-279e9ae68955?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=625&q=80",
-      title: "Awesome",
-      category: "events",
-    }, 
-    {
-      _createdAt: Date.now(),
-      views:55,
-      author: {_id:2,name:"adrian"},
-      id: 2,
-      description: "This is a description",
-      image:
-        "https://images.unsplash.com/photo-1544717306-279e9ae68955?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=625&q=80",
-      title: "Awesome",
-      category: "events",
-    }, 
-    {
-      _createdAt: Date.now(),
-      views:55,
-      author: {_id:3,name:"adrian"},
-      id: 3,
-      description: "This is a description",
-      image:
-        "https://images.unsplash.com/photo-1544717306-279e9ae68955?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=625&q=80",
-      title: "Awesome",
-      category: "events",
-    }, 
-  ];
+  const params = {search :query || null};
+  //  const posts = await client.fetch(STARTUPS_QUERY)
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY ,params });
 
   return (
     <>
       <section className="pink_container">
-
         <h1 className="heading">
           Piche your startup, <br />
           Connect with  Enterpreneurs
@@ -51,7 +21,6 @@ export default async function page({ searchParams }: { searchParams: Promise<{ q
         <p className="sub-heading !max-w-3xl ">
           Submit Ideas, Vote on Pitches, ans Get Noticed in Virtual  Competitions.
         </p>
-
         <SearchForm query={query} />
       </section>
 
@@ -60,12 +29,13 @@ export default async function page({ searchParams }: { searchParams: Promise<{ q
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ?
           (posts.map((post, index: Number) => (
-            <StartupCard key={post?.id} post = {post} />))): (
+            <StartupCard key={post?._id} post = {post} />))): (
               <p className="no-results">No Startups Found</p>
               )
           }
         </ul>
       </section>
+      <SanityLive />
     </>
   )
 }
