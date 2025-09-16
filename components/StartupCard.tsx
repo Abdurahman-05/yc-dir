@@ -3,10 +3,13 @@ import { formatDate } from "@/utils"
 import Link from "next/link"
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { json } from "stream/consumers";
 
 const StartupCard = ({ post }) => {
-
-  const { _createdAt, views, author, id, description, image, title, category } = post;
+  const posts = post;
+  // console.log(JSON.stringify(post , null , 2));
+  
+  const { _createdAt, _id, views, author, description, image, title, category } = post;
   return (
 
     <li className="startup-card group">
@@ -38,7 +41,7 @@ const StartupCard = ({ post }) => {
         </Link>
       </div>
 
-      <Link href={`/startup/${author?.id}`}>
+      <Link href={`/startup/${_id}`}>
         <p className="startup-card_desc">{description}</p>
         <Image 
           src={`${author?.image}`} 
@@ -54,7 +57,7 @@ const StartupCard = ({ post }) => {
           <p className="text-16-medium">{category}</p>
         </Link>
         <Button className="startup-card_btn" asChild>
-          <Link href={`/startup/${author?._id}`}>Details</Link>
+          <Link href={`/startup/${_id}`}>Details</Link>
         </Button>
       </div>
     </li>
