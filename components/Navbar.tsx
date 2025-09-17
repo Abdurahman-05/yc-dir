@@ -5,6 +5,8 @@ import { auth, signOut , signIn} from '../auth'
 
 export const Navbar = async () => {
   const session = await auth()
+  console.log(session);
+  
 
   return (
      <header className="px-5 py-3 shadow-sm bg-white font-work-sans">
@@ -13,7 +15,7 @@ export const Navbar = async () => {
         <Image src="/logo.png" alt="logo" width={144} height={30} /> 
         </Link>
         <div className="flex items-center gap-3">
-        {session && session?.user ? (
+        {session && session?.user? (
           <>
           <Link href="/startup/create">
             <span>create</span>
@@ -30,7 +32,7 @@ export const Navbar = async () => {
               </button>
             </form>
           <Link href={`/user/${session?.user?.id}`}>
-            <span>{session?.user?.name}</span>
+            <Image src={session?.user?.image} width={45} height={45} className='rounded-full' alt='profile imge'/>
           </Link>
           </>
         ) : (

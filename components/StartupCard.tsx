@@ -1,20 +1,30 @@
 import { EyeIcon } from "lucide-react"
-import { formatDate } from "@/utils"
+import { cn, formatDate } from "@/lib/utils"
 import Link from "next/link"
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { json } from "stream/consumers";
+import { Skeleton } from "./ui/skeleton";
+
 
 const StartupCard = ({ post }) => {
-  const posts = post;
-  // console.log(JSON.stringify(post , null , 2));
+
+
+  const {
+    createdAt,
+    id,
+    views,
+    author,
+    description,
+    image,
+    title,
+    category 
+  } = post;
   
-  const { _createdAt, _id, views, author, description, image, title, category } = post;
   return (
 
     <li className="startup-card group">
       <div className="flex-between">
-        <p className="startup-card_date">{formatDate(_createdAt)}</p>
+        <p className="startup-card_date">{formatDate(createdAt as unknown as string)}</p>
         <div className="flex gap-1.5">
           <EyeIcon className="size-6 text-primary" />
           <span className="text-16-medium">{views}</span>
@@ -23,16 +33,17 @@ const StartupCard = ({ post }) => {
 
       <div className="flex-between mt-5 gap-5">
         <div className="flex-1">
-          <Link href={`/user/${author?._id}`}>
+          <Link href={`/user/${author?.id}`}>
             <p className="text-16-medium line-clamp-1">{author?.name}</p>
           </Link>
-          <Link href={`/startup/${author?._id}`}>
-            <h3 className="text-26-semibold line-clamp-1">{title}</h3>
+          <Link href={`/startup/${id}`}>
+            <h3 className="text-26-semibold line-clamp-1">{title}
+            </h3>
           </Link>
         </div>
-        <Link href={`/user/${author?._id}`}>
+        <Link href={`/user/${author?.id}`}>
           <Image
-            src={`/profile.JPG`} 
+            src={`${author?.image || "https://placehold.co/600x400/000000/FFF"}`}
             alt={author?.name}
             width={48}
             height={48}
@@ -41,14 +52,14 @@ const StartupCard = ({ post }) => {
         </Link>
       </div>
 
-      <Link href={`/startup/${_id}`}>
+      <Link href={`/startup/${id}`}>
         <p className="startup-card_desc">{description}</p>
-        <Image 
-          src={`${author?.image}`} 
-          alt={title || "Startup image"} 
+        <Image
+          src={`${image}`}
+          alt={title || "Startup image"}
           width={400}
           height={200}
-          className="startup-card_img" 
+          className="startup-card_img"
         />
       </Link>
 
@@ -57,11 +68,21 @@ const StartupCard = ({ post }) => {
           <p className="text-16-medium">{category}</p>
         </Link>
         <Button className="startup-card_btn" asChild>
-          <Link href={`/startup/${_id}`}>Details</Link>
+          <Link href={`/startup/${id}`}>Details</Link>
         </Button>
       </div>
     </li>
   )
 }
+export const StartupCardSkeleton = () => (
+  <>
+    {[0, 1, 2, 3, 4].map((index: number) => (
+      <li key={cn("skeleton", index)}>
+        <Skeleton className="startup-card_skeleton" />
+      </li>
+    ))}
+  </>
+);
+
 
 export default StartupCard

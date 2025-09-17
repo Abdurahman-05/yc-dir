@@ -1,5 +1,5 @@
 
-import { formatDate } from "@/utils";
+import { formatDate} from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -7,21 +7,28 @@ import { Suspense } from "react";
 import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
+import { prisma } from "@/lib/prisma";
+
+
 
 
 const md = markdownit();
- export const expermental_ppr = true;
+//  export const expermental_ppr = true;
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const id = (await params).id;
-  const post: any = null;
-  
+  const id = params.id
+
+  const post = await prisma.startup.findUnique({
+    where: { id: id }, // if your id is Int -> use Number(id)
+    include: { author: true },
+  })
   if (!post) return notFound();
+
   const parsedContent = md.render(post?.pitch || "");
   return (
     <>
       <section className="pink_container !min-h-[230px]">
-        <p className="tag">{formatDate(post?._createdAt)}</p>
+        <p className="tag">{formatDate(post?.createdAt as unknown as string)}</p>
 
         <h1 className="heading">{post.title}</h1>
         <p className="sub-heading !max-w-5xl">{post.description}</p>
@@ -36,11 +43,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex-between gap-5">
             <Link
-              href={`/user/${post.author?._id}`}
+              href={`/user/${post.author?.id}`}
               className="flex gap-2 items-center mb-3"
             >
               <Image
-                src={post.author.image}
+                src={post.author?.image || "/profile.JPG"}
                 alt="avatar"
                 width={32}
                 height={32}
@@ -48,9 +55,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
               />
 
               <div>
-                <p className="text-20-medium">{post.author.name}</p>
+                <p className="text-20-medium">{post.author?.name}</p>
                 <p className="text-16-medium !text-black-300">
-                  @{post.author.username}
+                  @{post.author?.id}
                 </p>
               </div>
             </Link>
@@ -71,25 +78,14 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
         <hr className="divider" />
 
-        {/* {editorPosts?.length > 0 && (
-          <div className="max-w-4xl mx-auto">
-            <p className="text-30-semibold">Editor Picks</p> */}
-
-            {/* <ul className="mt-7 card_grid-sm">
-              {editorPosts.map((post: StartupTypeCard, i: number) => (
-                <StartupCard key={i} post={post} />
-              ))}
-            </ul> */}
-          {/* </div> */}
-        {/* )} */}
-
         <Suspense fallback={<Skeleton className="view_skeleton" />}>
           <View id ={id} />
         </Suspense>
       </section>
     </>
-  );
+);
 };
   
 
 export default Page;
+

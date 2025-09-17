@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
+    "@prisma/extension-accelerate": "^2.0.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/typography": "^0.5.16",
+    "@uiw/react-md-editor": "^4.0.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
@@ -20,9 +22,11 @@
     "next-auth": "5.0.0-beta.29",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "slugify": "^1.6.6",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^4.1.8"
+    "toaster": "^0.1.2",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,54 +1,40 @@
 
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
-// import { AUTHOR_BY_GITHUB_ID_QUERY } from "@/sanity/lib/queries";
-// import { client } from "@/sanity/lib/client";
-// import { writeClient } from "@/sanity/lib/write-client";
+import { prisma } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [GitHub],
+  callbacks: {
+    async signIn({ user, profile }) {
+      // Ensure we have a GitHub profile
+      console.log(profile);
+      
+      if (!profile) return false;
+
+      const githubId = String((profile as any).id);
+      const name = user.name ?? (profile as any).name ?? null;
+      const email = user.email ?? (profile as any).email ?? undefined;
+      const image = user.image ?? (profile as any).avatar_url ?? null;
+      const bio = (profile as any).bio ?? null;
+
+      await prisma.author.upsert({
+        where: { id: githubId },
+        update: { name: name ?? undefined, image: image ?? undefined, bio: bio ?? undefined, email, },
+        create: { id: githubId, name: name ?? "", image: image ?? undefined, bio: bio ?? undefined, email },
+      });
+
+      return true;
+    },
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        token.id = String((profile as any).id);
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      Object.assign(session, { id: token.id });
+      return session;
+    },
+  },
 });
-//   callbacks: {
-//     async signIn({
-//       user: { name, email, image },
-//       profile: { id, login, bio },
-//     }) {
-//       const existingUser = await client
-//         .withConfig({ useCdn: false })
-//         .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-//           id,
-//         });
-
-//       if (!existingUser) {
-//         await writeClient.create({
-//           _type: "author",
-//           id,
-//           name,
-//           username: login,
-//           email,
-//           image,
-//           bio: bio || "",
-//         });
-//       }
-
-//       return true;
-//     },
-//     async jwt({ token, account, profile }) {
-//       if (account && profile) {
-//         const user = await client
-//           .withConfig({ useCdn: false })
-//           .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-//             id: profile?.id,
-//           });
-
-//         token.id = user?._id;
-//       }
-
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       Object.assign(session, { id: token.id });
-//       return session;
-//     },
-//   },
-// });

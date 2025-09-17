@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
+import Toaster from "@/components/ui/toast"
 // import 'easymde/dist/easymde.min.css'; 
 
 
@@ -35,7 +37,8 @@ export default function RootLayout({
       <body
         className={`${workSans.variable} font-work-sans antialiased`}
       >
-        {children}
+        <SessionProvider>{children}</SessionProvider>
+        <Toaster />
       </body>
     </html>
   );
