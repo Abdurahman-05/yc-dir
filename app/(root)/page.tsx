@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 export default async function page({ searchParams }: { searchParams: Promise<{ query?: string }> }) {
   const query = (await searchParams).query;
   const session = await auth()
-  // console.log(session);
+ 
   
   const posts = await prisma.startup.findMany({
     include: { author: true },

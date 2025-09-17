@@ -16,6 +16,7 @@ datasource db {
 model Author {
   id         String    @id @default(cuid())
   name       String
+  username   String    @unique
   email      String  @unique
   image      String?
   bio        String?

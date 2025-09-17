@@ -7,7 +7,6 @@ export const Navbar = async () => {
   const session = await auth()
   console.log(session);
   
-
   return (
      <header className="px-5 py-3 shadow-sm bg-white font-work-sans">
       <nav className="flex justify-between items-center px-2 text-black">

@@ -8,20 +8,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user, profile }) {
       // Ensure we have a GitHub profile
-      console.log(profile);
-      
       if (!profile) return false;
 
       const githubId = String((profile as any).id);
       const name = user.name ?? (profile as any).name ?? null;
+      const username = (profile as any).login ?? undefined;
       const email = user.email ?? (profile as any).email ?? undefined;
       const image = user.image ?? (profile as any).avatar_url ?? null;
       const bio = (profile as any).bio ?? null;
 
       await prisma.author.upsert({
         where: { id: githubId },
-        update: { name: name ?? undefined, image: image ?? undefined, bio: bio ?? undefined, email, },
-        create: { id: githubId, name: name ?? "", image: image ?? undefined, bio: bio ?? undefined, email },
+        update: { name: name ?? undefined, image: image ?? undefined, bio: bio ?? undefined, email, username },
+        create: { id: githubId, name: name ?? "", image: image ?? undefined, bio: bio ?? undefined, email, username },
       });
 
       return true;

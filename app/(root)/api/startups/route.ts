@@ -25,7 +25,18 @@ export async function POST(req: NextRequest) {
       },
       select: { id: true },
     });
-  
+    
+    // const users = await prisma.author.create({
+    //   data: {
+    //     title: parsed.title,
+    //     description: parsed.description,
+    //     category: parsed.category,
+    //     image: parsed.link,
+    //     pitch: parsed.pitch,
+    //     author: { connect: { id: String(session.id) } },
+    //   },
+    //   select: { id: true },
+    // });
 
     return NextResponse.json({ id: startup.id }, { status: 201 });
   } catch (err) {
