@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@next/swc-win32-x64-msvc": "^15.5.3",
     "@prisma/client": "^6.16.2",
     "@prisma/extension-accelerate": "^2.0.2",
     "@radix-ui/react-slot": "^1.2.3",
