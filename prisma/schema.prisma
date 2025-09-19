@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+ 
 }
 
 datasource db {
@@ -13,10 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
 model Author {
   id         String    @id @default(cuid())
   name       String
-  username   String    @unique
   email      String  @unique
   image      String?
   bio        String?
