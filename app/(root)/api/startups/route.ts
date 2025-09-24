@@ -47,25 +47,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-export default async function GET({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  try {
-    const { id } = await params;
-
-    const post = await prisma.startup.findUnique({
-      where: { id },
-      include: { author: true },
-    });
-    return NextResponse.json(post, { status: 200 });
-  } catch (error) {
-   console.error(error)
-   return NextResponse.json(
-      { error: "Invalid data" },
-      { status: 400 },
-    );
-  }
-}
+// Note: No GET handler exported; POST is the only supported method here.
 
