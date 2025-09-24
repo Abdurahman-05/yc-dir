@@ -15,8 +15,8 @@ import { prisma } from "@/lib/prisma";
 const md = markdownit();
 //  export const expermental_ppr = true;
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const id = params.id
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params
 
   const post = await prisma.startup.findFirst({
     where: { id: id }, // if your id is Int -> use Number(id)
