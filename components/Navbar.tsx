@@ -5,7 +5,7 @@ import { auth, signOut , signIn} from '../auth'
 
 export const Navbar = async () => {
   const session = await auth()
-  console.log(session);
+  // console.log(session);
   
   return (
      <header className="px-5 py-3 shadow-sm bg-white font-work-sans">

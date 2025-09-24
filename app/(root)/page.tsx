@@ -1,11 +1,10 @@
-import { SearchParams } from "next/dist/server/request/search-params";
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 export default async function page({ searchParams }: { searchParams: Promise<{ query?: string }> }) {
-  const query = (await searchParams).query;
+  const { query } = await searchParams;
   const session = await auth()
  
   

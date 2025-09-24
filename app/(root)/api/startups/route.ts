@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     if (!session?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-   console.log(session);
+  //  console.log(session);
 
     const body = await req.json();
     const parsed = await formSchema.parseAsync(body);
