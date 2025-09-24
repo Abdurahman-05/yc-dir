@@ -1,11 +1,10 @@
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 export default async function page({ searchParams }: { searchParams: Promise<{ query?: string }> }) {
   const { query } = await searchParams;
-  const session = await auth()
+  
  
   
   const posts = await prisma.startup.findMany({
@@ -29,7 +28,7 @@ export default async function page({ searchParams }: { searchParams: Promise<{ q
         <p>{query ? `search result for "${query}"` : 'all Startups'}</p>
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ?
-            (posts.map((post, index: Number) => (
+            (posts.map((post) => (
               <StartupCard key={post?.id} post={post} />))) : (
               <p className="no-results">No Startups Found</p>
             )

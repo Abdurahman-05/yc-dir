@@ -59,6 +59,7 @@ export default async function GET({
       where: { id },
       include: { author: true },
     });
+    return NextResponse.json(post, { status: 200 });
   } catch (error) {
    console.error(error)
    return NextResponse.json(
