@@ -23,6 +23,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ author });
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ error: "Failed to update" }, { status: 400 });
   }
 }

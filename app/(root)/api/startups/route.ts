@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ id: startup.id }, { status: 201 });
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { error: "Invalid data" },
       { status: 400 },
@@ -59,6 +60,7 @@ export default async function GET({
       include: { author: true },
     });
   } catch (error) {
+   console.error(error)
    return NextResponse.json(
       { error: "Invalid data" },
       { status: 400 },

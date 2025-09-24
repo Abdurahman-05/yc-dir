@@ -1,7 +1,6 @@
 
 import { prisma } from "@/lib/prisma";
 import Ping from "./Ping";
-import { useEffect, useState } from "react";
 
 
 const View = async ({ id }: { id: string }) =>  {

@@ -18,7 +18,7 @@ const md = markdownit();
 const Page = async ({ params }: { params: { id: string } }) => {
   const id = params.id
 
-  const post = await prisma.startup.findUnique({
+  const post = await prisma.startup.findFirst({
     where: { id: id }, // if your id is Int -> use Number(id)
     include: { author: true },
   })
@@ -34,9 +34,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <p className="sub-heading !max-w-5xl">{post.description}</p>
       </section>
       <section className="section_container">
-        <img
+        <Image
           src={post.image}
           alt="thumbnail"
+          width={1200}
+          height={675}
           className="w-full h-auto rounded-xl"
         />
 

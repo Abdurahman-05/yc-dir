@@ -22,7 +22,8 @@ const StartupForm = () => {
   const { toast } = useToast();
   const router = useRouter()
 
-  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+  type FormActionState = { error: string; status: "INITIAL" | "ERROR" }
+  const handleFormSubmit = async (prevState: FormActionState, formData: FormData) => {
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -76,7 +77,7 @@ const StartupForm = () => {
     {
       error: "",
       status: "INITIAL",
-    }
+    } as FormActionState
   );
 
   return (
