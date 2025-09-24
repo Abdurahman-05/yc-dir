@@ -4,7 +4,14 @@ import GitHub from "next-auth/providers/github";
 import { prisma } from "@/lib/prisma";
 
 const config = {
-  providers: [GitHub],
+  providers: [
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID as string,
+      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+    }),
+  ],
+  secret: process.env.AUTH_SECRET,
+  trustHost: true,
   callbacks: {
     async signIn({ user, profile }) {
       // Ensure we have a GitHub profile
